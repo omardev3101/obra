@@ -8,7 +8,8 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/",
+  "start_url": "/obra/",
+  "scope": "/obra/",
   "background_color": "#090d16",
   "theme_color": "#fbbf24",
   "display": "standalone",

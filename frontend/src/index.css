@@ -221,3 +221,45 @@ button {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
+
+/* Regras Responsivas Mobile */
+.mobile-toggle {
+  display: none;
+}
+
+@media (max-width: 968px) {
+  .desktop-menu {
+    display: none !important;
+  }
+
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+  }
+
+  .section {
+    padding: 40px 0;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  h1 {
+    font-size: 2.2rem !important;
+  }
+
+  h2 {
+    font-size: 1.6rem !important;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+}
