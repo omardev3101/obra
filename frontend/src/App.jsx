@@ -98,7 +98,7 @@ function ScrollToHash() {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/obra">
       <GlobalSEOHelper />
       <ScrollToHash />
       <Routes>
