@@ -466,6 +466,23 @@ const Admin = () => {
             <Plus size={18} /> Portfólio de Obras
           </button>
           <button 
+            onClick={() => setActiveTab('share')}
+            className={`btn-secondary ${activeTab === 'share' ? 'active-tab' : ''}`}
+            style={{ 
+              border: 'none', 
+              background: activeTab === 'share' ? 'var(--accent-glow)' : 'transparent',
+              color: activeTab === 'share' ? 'var(--accent-color)' : 'var(--text-secondary)',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 16px',
+              borderRadius: '8px'
+            }}
+          >
+            💬 Convite WhatsApp
+          </button>
+          <button 
             onClick={() => setActiveTab('settings')}
             className={`btn-secondary ${activeTab === 'settings' ? 'active-tab' : ''}`}
             style={{ 
@@ -1097,6 +1114,84 @@ const Admin = () => {
                     </div>
                   );
                 })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab Content: SHARE WHATSAPP CONVITE */}
+        {activeTab === 'share' && (
+          <div className="glass-card" style={{ padding: '32px', borderRadius: '20px' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '8px', color: 'var(--accent-color)' }}>
+              💬 Gerador de Convite para WhatsApp
+            </h2>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.6 }}>
+              Compartilhe o convite oficial da <strong>1001 Obra</strong> com seus clientes e contatos para que eles conheçam a plataforma, solicitem orçamentos ou chamem profissionais de reforma sob demanda.
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+              <div>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '12px' }}>Texto Pré-formatado do Convite</h3>
+                <div style={{
+                  background: 'var(--bg-tertiary)',
+                  border: '1px solid var(--border-color)',
+                  padding: '20px',
+                  borderRadius: '12px',
+                  fontSize: '0.95rem',
+                  lineHeight: 1.7,
+                  whiteSpace: 'pre-wrap',
+                  color: 'var(--text-primary)',
+                  marginBottom: '20px'
+                }}>
+{`🏗️ *Olá! Conheça a 1001 OBRA*
+
+Precisa reformar seu imóvel residencial ou comercial com garantia, agilidade e acompanhamento profissional?
+
+Na *1001 Obra*, oferecemos:
+✅ *Pedreiro para Reformas de Alto Padrão* (Demolição, Porcelanato, Nivelamento)
+✅ *Pintura, Drywall, Elétrica e PMOC*
+✅ *Orçamento Rápido e Simulador de Custos Online*
+✅ *Equipes Próprias com ART e Laudo NBR*
+
+👉 Acesse nosso site e solicite sua avaliação sem compromisso:
+https://pessistemas.vps-kinghost.net/obra/
+
+📲 Ou chame um profissional pelo WhatsApp!`}
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                  <a 
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`🏗️ *Olá! Conheça a 1001 OBRA*\n\nPrecisa reformar seu imóvel residencial ou comercial com garantia, agilidade e acompanhamento profissional?\n\nNa *1001 Obra*, oferecemos:\n✅ *Pedreiro para Reformas de Alto Padrão* (Demolição, Porcelanato, Nivelamento)\n✅ *Pintura, Drywall, Elétrica e PMOC*\n✅ *Orçamento Rápido e Simulador de Custos Online*\n✅ *Equipes Próprias com ART e Laudo NBR*\n\n👉 Acesse nosso site e solicite sua avaliação sem compromisso:\nhttps://pessistemas.vps-kinghost.net/obra/\n\n📲 Ou solicite sua visita pelo nosso site!`)}`}
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="btn-primary"
+                    style={{ background: '#25D366', color: '#fff', padding: '12px 24px', textDecoration: 'none', borderRadius: '12px' }}
+                  >
+                    🚀 Enviar pelo WhatsApp
+                  </a>
+
+                  <button 
+                    type="button" 
+                    className="btn-secondary"
+                    style={{ padding: '12px 20px', borderRadius: '12px' }}
+                    onClick={() => {
+                      const text = `🏗️ *Olá! Conheça a 1001 OBRA*\n\nPrecisa reformar seu imóvel residencial ou comercial com garantia, agilidade e acompanhamento profissional?\n\nNa *1001 Obra*, oferecemos:\n✅ *Pedreiro para Reformas de Alto Padrão* (Demolição, Porcelanato, Nivelamento)\n✅ *Pintura, Drywall, Elétrica e PMOC*\n✅ *Orçamento Rápido e Simulador de Custos Online*\n✅ *Equipes Próprias com ART e Laudo NBR*\n\n👉 Acesse nosso site e solicite sua avaliação sem compromisso:\nhttps://pessistemas.vps-kinghost.net/obra/`;
+                      navigator.clipboard.writeText(text);
+                      alert('Texto do convite copiado para a área de transferência!');
+                    }}
+                  >
+                    📋 Copiar Texto
+                  </button>
+                </div>
+              </div>
+
+              <div style={{ background: 'var(--bg-primary)', padding: '24px', borderRadius: '16px', border: '1px dashed var(--accent-color)' }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '12px', color: 'var(--accent-color)' }}>💡 Dica de Divulgação</h3>
+                <ul style={{ paddingLeft: '20px', color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.95rem' }}>
+                  <li>Envie nos grupos de condomínios, moradores e empresários locais.</li>
+                  <li>Publique nos **Status do WhatsApp** acompanhado do link do site.</li>
+                  <li>Compartilhe com clientes que pedirem indicações de pedreiros e engenheiros de reforma.</li>
+                </ul>
               </div>
             </div>
           </div>
