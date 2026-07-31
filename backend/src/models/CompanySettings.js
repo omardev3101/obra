@@ -12,7 +12,7 @@ const CompanySettings = sequelize.define('CompanySettings', {
     defaultValue: '1001 OBRA'
   },
   logoUrl: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     defaultValue: '/logo.png'
   },
   telefone: {
