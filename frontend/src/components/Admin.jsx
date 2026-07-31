@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import { Lock, FileText, Users, Settings, Plus, Trash2, CheckCircle2, Circle, DollarSign } from 'lucide-react';
 
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/obra/api';
+
 const Admin = () => {
   const [token, setToken] = useState(localStorage.getItem('admin_token') || '');
   const [email, setEmail] = useState('');
@@ -63,7 +65,7 @@ const Admin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, senha })
@@ -89,7 +91,7 @@ const Admin = () => {
 
   const fetchLeads = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/leads', {
+      const response = await fetch(`${API_BASE}/leads`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -103,7 +105,7 @@ const Admin = () => {
 
   const fetchSEOPages = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/seo-list');
+      const response = await fetch(`${API_BASE}/seo-list`);
       if (response.ok) {
         const data = await response.json();
         setSeoPages(data);
@@ -115,7 +117,7 @@ const Admin = () => {
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/leads/${id}/status`, {
+      const response = await fetch(`${API_BASE}/leads/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +135,7 @@ const Admin = () => {
 
   const handleDeleteSEO = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/seo/${id}`, {
+      const response = await fetch(`${API_BASE}/seo/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -147,7 +149,7 @@ const Admin = () => {
 
   const fetchProfessionals = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/professionals', {
+      const response = await fetch(`${API_BASE}/professionals`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -161,7 +163,7 @@ const Admin = () => {
 
   const handleUpdateProfessionalStatus = async (id, status) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/professionals/${id}/status`, {
+      const response = await fetch(`${API_BASE}/professionals/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +181,7 @@ const Admin = () => {
 
   const fetchRequests = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/requests', {
+      const response = await fetch(`${API_BASE}/requests`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -193,7 +195,7 @@ const Admin = () => {
 
   const fetchCompanySettings = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/settings');
+      const response = await fetch(`${API_BASE}/settings`);
       if (response.ok) {
         const data = await response.json();
         setCompanySettings(data);
@@ -206,7 +208,7 @@ const Admin = () => {
   const handleSaveCompanySettings = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/settings', {
+      const response = await fetch(`${API_BASE}/settings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -219,7 +221,7 @@ const Admin = () => {
         fetchCompanySettings();
       } else {
         const err = await response.json();
-        throw new Error(err.error);
+        throw new Error(err.error || 'Erro ao salvar configurações.');
       }
     } catch (err) {
       alert(err.message);
@@ -239,7 +241,7 @@ const Admin = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/projects');
+      const response = await fetch(`${API_BASE}/projects`);
       if (response.ok) {
         const data = await response.json();
         setProjects(data);
@@ -267,7 +269,7 @@ const Admin = () => {
   const handleCreateProject = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/projects', {
+      const response = await fetch(`${API_BASE}/projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -290,7 +292,7 @@ const Admin = () => {
         });
       } else {
         const err = await response.json();
-        throw new Error(err.error);
+        throw new Error(err.error || 'Erro ao criar projeto.');
       }
     } catch (err) {
       alert(err.message);
@@ -300,7 +302,7 @@ const Admin = () => {
   const handleDeleteProject = async (id) => {
     if (!window.confirm('Deseja realmente remover este projeto do portfólio?')) return;
     try {
-      const response = await fetch(`http://localhost:3000/api/projects/${id}`, {
+      const response = await fetch(`${API_BASE}/projects/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -315,7 +317,7 @@ const Admin = () => {
   const handleCreateSEO = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/seo-override', {
+      const response = await fetch(`${API_BASE}/seo-override`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
