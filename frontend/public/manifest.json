@@ -3,9 +3,10 @@
   "name": "1001 Obra ERP & Landing",
   "icons": [
     {
-      "src": "favicon.svg",
-      "type": "image/svg+xml",
-      "sizes": "512x512"
+      "src": "/obra/logo.png",
+      "type": "image/png",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/obra/",

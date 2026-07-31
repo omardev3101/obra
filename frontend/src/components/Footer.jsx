@@ -49,7 +49,7 @@ const Footer = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <img 
-              src={settings.logoUrl || "/logo.png"} 
+              src={(settings.logoUrl && settings.logoUrl !== '/logo.png') ? settings.logoUrl : "/obra/logo.png"} 
               alt={`${settings.nomeEmpresa} Logo`} 
               style={{ 
                 width: '38px', 

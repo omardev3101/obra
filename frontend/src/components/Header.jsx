@@ -214,7 +214,7 @@ const Header = () => {
         {/* Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img 
-            src={companySettings.logoUrl || "/logo.png"} 
+            src={(companySettings.logoUrl && companySettings.logoUrl !== '/logo.png') ? companySettings.logoUrl : "/obra/logo.png"} 
             alt={`${companySettings.nomeEmpresa} Logo`} 
             style={{ 
               width: '38px', 
@@ -442,39 +442,46 @@ const Header = () => {
           {/* Menu Mobile Button */}
           <button 
             onClick={() => setIsOpen(!isOpen)} 
-            style={{ color: 'var(--text-primary)' }}
+            style={{ color: 'var(--text-primary)', zIndex: 1001, pointerEvents: 'auto' }}
             className="mobile-toggle"
+            aria-label="Menu Mobile"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
 
-      {/* Menu Mobile */}
+      {/* Menu Mobile Dropdown Panel */}
       {isOpen && (
         <div className="glass-panel animate-fade-in" style={{
-          position: 'absolute',
+          position: 'fixed',
           top: '72px',
           left: 0,
           right: 0,
+          bottom: 0,
+          background: 'var(--bg-secondary)',
           padding: '24px',
-          borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
-          zIndex: 99
+          gap: '20px',
+          zIndex: 1000,
+          overflowY: 'auto'
         }}>
-          <Link to="/" onClick={() => setIsOpen(false)} style={{ fontSize: '1.125rem', fontWeight: 600 }}>Home</Link>
-          <Link to="/#portfolio" onClick={() => setIsOpen(false)} style={{ fontSize: '1.125rem', fontWeight: 600 }}>Portfólio</Link>
-          <Link to="/#calculadora" onClick={() => setIsOpen(false)} style={{ fontSize: '1.125rem', fontWeight: 600 }}>Simulador de Custos</Link>
-          <Link to="/admin" onClick={() => setIsOpen(false)} style={{ fontSize: '1.125rem', fontWeight: 600 }}>Painel Admin</Link>
-          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-            <h4 style={{ color: 'var(--accent-color)', fontWeight: 700, marginBottom: '8px' }}>Nossos Serviços</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-              <Link to={`/locais/pintura-interna-externa/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)}>Pintura</Link>
-              <Link to={`/locais/paredes-em-drywall/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)}>Drywall</Link>
-              <Link to={`/locais/instalacoes-eletricas/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)}>Elétrica</Link>
-              <Link to={`/locais/manutencao-predial-pmoc/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)}>PMOC / ART</Link>
+          <Link to="/" onClick={() => setIsOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 700 }}>🏠 Home</Link>
+          <Link to="/pedreiro-para-reformas" onClick={() => setIsOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 700 }}>🧱 Pedreiro para Reformas</Link>
+          <Link to="/#portfolio" onClick={() => setIsOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 700 }}>🏗️ Portfólio de Obras</Link>
+          <Link to="/#calculadora" onClick={() => setIsOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 700 }}>🧮 Simulador de Custos</Link>
+          <Link to="/chamar-profissional" onClick={() => setIsOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 700 }}>⚡ Chamar Profissional (Uber)</Link>
+          <Link to="/trabalhe-conosco" onClick={() => setIsOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 700 }}>👷 Trabalhe Conosco</Link>
+          <Link to="/admin" onClick={() => setIsOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 700 }}>🔐 Painel Admin</Link>
+          
+          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', marginTop: '8px' }}>
+            <h4 style={{ color: 'var(--accent-color)', fontWeight: 800, marginBottom: '12px', fontSize: '1.1rem' }}>Especialidades Rápidas</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <Link to={`/locais/pintura-interna-externa/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Pintura</Link>
+              <Link to={`/locais/paredes-em-drywall/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Drywall</Link>
+              <Link to={`/locais/instalacoes-eletricas/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Elétrica</Link>
+              <Link to={`/locais/manutencao-predial-pmoc/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>PMOC / ART</Link>
             </div>
           </div>
         </div>
