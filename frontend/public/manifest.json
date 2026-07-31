@@ -1,0 +1,16 @@
+{
+  "short_name": "1001Obra",
+  "name": "1001 Obra ERP & Landing",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#090d16",
+  "theme_color": "#fbbf24",
+  "display": "standalone",
+  "orientation": "portrait"
+}
