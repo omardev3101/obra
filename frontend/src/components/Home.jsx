@@ -390,7 +390,7 @@ const Home = () => {
                     {service.desc}
                   </p>
                 </div>
-                <a href={`/locais/${service.slug}/${currentCidade}/${currentBairro}`} style={{
+                <a href={`/obra/locais/${service.slug}/${currentCidade}`} style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',

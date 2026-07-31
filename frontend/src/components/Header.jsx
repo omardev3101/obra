@@ -478,10 +478,10 @@ const Header = () => {
           <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', marginTop: '8px' }}>
             <h4 style={{ color: 'var(--accent-color)', fontWeight: 800, marginBottom: '12px', fontSize: '1.1rem' }}>Especialidades Rápidas</h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-              <Link to={`/locais/pintura-interna-externa/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Pintura</Link>
-              <Link to={`/locais/paredes-em-drywall/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Drywall</Link>
-              <Link to={`/locais/instalacoes-eletricas/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Elétrica</Link>
-              <Link to={`/locais/manutencao-predial-pmoc/${currentCidadeSlug}/${currentBairroSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>PMOC / ART</Link>
+              <Link to={`/locais/pintura-interna-externa/${currentCidadeSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Pintura</Link>
+              <Link to={`/locais/paredes-em-drywall/${currentCidadeSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Drywall</Link>
+              <Link to={`/locais/instalacoes-eletricas/${currentCidadeSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>Elétrica</Link>
+              <Link to={`/locais/manutencao-predial-pmoc/${currentCidadeSlug}`} onClick={() => setIsOpen(false)} style={{ padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'center', fontWeight: 600 }}>PMOC / ART</Link>
             </div>
           </div>
         </div>
