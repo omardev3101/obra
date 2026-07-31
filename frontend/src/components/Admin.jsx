@@ -1143,25 +1143,28 @@ const Admin = () => {
                   color: 'var(--text-primary)',
                   marginBottom: '20px'
                 }}>
-{`🏗️ *Olá! Conheça a 1001 OBRA*
+{`🏗️ *CONVITE ESPECIAL: Descubra o 1001 Obra!*
 
-Precisa reformar seu imóvel residencial ou comercial com garantia, agilidade e acompanhamento profissional?
+Prezado(a) Profissional da Construção Civil e Gestor(a),
 
-Na *1001 Obra*, oferecemos:
-✅ *Pedreiro para Reformas de Alto Padrão* (Demolição, Porcelanato, Nivelamento)
-✅ *Pintura, Drywall, Elétrica e PMOC*
-✅ *Orçamento Rápido e Simulador de Custos Online*
-✅ *Equipes Próprias com ART e Laudo NBR*
+Você está cordialmente convidado(a) a conhecer o *1001 Obra*, a plataforma desenvolvida para otimizar, organizar e elevar o nível da gestão das suas obras com máxima eficiência e transparência.
 
-👉 Acesse nosso site e solicite sua avaliação sem compromisso:
-https://pessistemas.vps-kinghost.net/obra/
+🔹 *O que você vai encontrar no 1001 Obra:*
+▫️ *Gestão Financeira & Custos:* Acompanhamento orçamentário em tempo real e controle de custos.
+▫️ *Controle de Suprimentos:* Gestão de compras, estoque de materiais e equipamentos.
+▫️ *Cronograma Físico-Financeiro:* Controle rigoroso de prazos e etapas da obra.
+▫️ *Diário de Obra Digital:* Registros práticos de ocorrências, fotos e acompanhamento de equipes.
+▫️ *Pedreiro & Mão de Obra sob Demanda:* Equipes treinadas com garantia e ART.
 
-📲 Ou chame um profissional pelo WhatsApp!`}
+🔗 *Acesse agora e confira a plataforma:*
+➔ https://pessistemas.vps-kinghost.net/obra/
+
+*PES Sistemas* — Transformando a gestão na engenharia e construção civil.`}
                 </div>
 
                 <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                   <a 
-                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`🏗️ *Olá! Conheça a 1001 OBRA*\n\nPrecisa reformar seu imóvel residencial ou comercial com garantia, agilidade e acompanhamento profissional?\n\nNa *1001 Obra*, oferecemos:\n✅ *Pedreiro para Reformas de Alto Padrão* (Demolição, Porcelanato, Nivelamento)\n✅ *Pintura, Drywall, Elétrica e PMOC*\n✅ *Orçamento Rápido e Simulador de Custos Online*\n✅ *Equipes Próprias com ART e Laudo NBR*\n\n👉 Acesse nosso site e solicite sua avaliação sem compromisso:\nhttps://pessistemas.vps-kinghost.net/obra/\n\n📲 Ou solicite sua visita pelo nosso site!`)}`}
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`🏗️ *CONVITE ESPECIAL: Descubra o 1001 Obra!*\n\nPrezado(a) Profissional da Construção Civil e Gestor(a),\n\nVocê está cordialmente convidado(a) a conhecer o *1001 Obra*, a plataforma desenvolvida para otimizar, organizar e elevar o nível da gestão das suas obras com máxima eficiência e transparência.\n\n🔹 *O que você vai encontrar no 1001 Obra:*\n▫️ *Gestão Financeira & Custos:* Acompanhamento orçamentário em tempo real e controle de custos.\n▫️ *Controle de Suprimentos:* Gestão de compras, estoque de materiais e equipamentos.\n▫️ *Cronograma Físico-Financeiro:* Controle rigoroso de prazos e etapas da obra.\n▫️ *Diário de Obra Digital:* Registros práticos de ocorrências, fotos e acompanhamento de equipes.\n▫️ *Pedreiro & Mão de Obra sob Demanda:* Equipes treinadas com garantia e ART.\n\n🔗 *Acesse agora e confira a plataforma:*\n➔ https://pessistemas.vps-kinghost.net/obra/\n\n*PES Sistemas* — Transformando a gestão na engenharia e construção civil.`)}`}
                     target="_blank" 
                     rel="noreferrer"
                     className="btn-primary"
@@ -1175,9 +1178,9 @@ https://pessistemas.vps-kinghost.net/obra/
                     className="btn-secondary"
                     style={{ padding: '12px 20px', borderRadius: '12px' }}
                     onClick={() => {
-                      const text = `🏗️ *Olá! Conheça a 1001 OBRA*\n\nPrecisa reformar seu imóvel residencial ou comercial com garantia, agilidade e acompanhamento profissional?\n\nNa *1001 Obra*, oferecemos:\n✅ *Pedreiro para Reformas de Alto Padrão* (Demolição, Porcelanato, Nivelamento)\n✅ *Pintura, Drywall, Elétrica e PMOC*\n✅ *Orçamento Rápido e Simulador de Custos Online*\n✅ *Equipes Próprias com ART e Laudo NBR*\n\n👉 Acesse nosso site e solicite sua avaliação sem compromisso:\nhttps://pessistemas.vps-kinghost.net/obra/`;
+                      const text = `🏗️ *CONVITE ESPECIAL: Descubra o 1001 Obra!*\n\nPrezado(a) Profissional da Construção Civil e Gestor(a),\n\nVocê está cordialmente convidado(a) a conhecer o *1001 Obra*, a plataforma desenvolvida para otimizar, organizar e elevar o nível da gestão das suas obras com máxima eficiência e transparência.\n\n🔹 *O que você vai encontrar no 1001 Obra:*\n▫️ *Gestão Financeira & Custos:* Acompanhamento orçamentário em tempo real e controle de custos.\n▫️ *Controle de Suprimentos:* Gestão de compras, estoque de materiais e equipamentos.\n▫️ *Cronograma Físico-Financeiro:* Controle rigoroso de prazos e etapas da obra.\n▫️ *Diário de Obra Digital:* Registros práticos de ocorrências, fotos e acompanhamento de equipes.\n▫️ *Pedreiro & Mão de Obra sob Demanda:* Equipes treinadas com garantia e ART.\n\n🔗 *Acesse agora e confira a plataforma:*\n➔ https://pessistemas.vps-kinghost.net/obra/\n\n*PES Sistemas* — Transformando a gestão na engenharia e construção civil.`;
                       navigator.clipboard.writeText(text);
-                      alert('Texto do convite copiado para a área de transferência!');
+                      alert('Texto do convite corporativo copiado para a área de transferência!');
                     }}
                   >
                     📋 Copiar Texto
