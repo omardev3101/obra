@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Send, PhoneCall } from 'lucide-react';
+import { API_URL } from '../config';
 
 const LeadModal = ({ isOpen, onClose, leadData }) => {
   const [nome, setNome] = useState('');
@@ -48,7 +49,7 @@ const LeadModal = ({ isOpen, onClose, leadData }) => {
 
     try {
       // Grava no backend
-      const response = await fetch('http://localhost:3000/api/leads', {
+      const response = await fetch(`${API_URL}/leads`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -6,6 +6,7 @@ import LeadModal from './LeadModal';
 import BeforeAfterSlider from './BeforeAfterSlider';
 import { CheckCircle2, ShieldCheck, Award, FileSpreadsheet, ChevronDown, HelpCircle } from 'lucide-react';
 import Footer from './Footer';
+import { API_URL } from '../config';
 
 const SEOPageTemplate = () => {
   const { servicoSlug, cidadeSlug, bairroSlug } = useParams();
@@ -96,7 +97,7 @@ const SEOPageTemplate = () => {
       setLoading(true);
       try {
         const bParam = bairroSlug ? `/${bairroSlug}` : '';
-        const response = await fetch(`http://localhost:3000/api/seo/${servicoSlug}/${cidadeSlug}${bParam}`);
+        const response = await fetch(`${API_URL}/seo/${servicoSlug}/${cidadeSlug}${bParam}`);
         if (!response.ok) throw new Error('Falha ao buscar SEO local');
         const data = await response.json();
         setPageData(data);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { ShieldAlert, Zap, Compass, CheckCircle2, User, Phone, Search, Loader, Image, Video, Paperclip, XCircle } from 'lucide-react';
+import { API_URL } from '../config';
 
 const LISTA_SERVICOS = [
   "Pedreiro - Levantamento de Muros",
@@ -66,7 +67,7 @@ const SolicitarServico = () => {
     if (requestId) {
       interval = setInterval(async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/requests/${requestId}`);
+          const response = await fetch(`${API_URL}/requests/${requestId}`);
           if (response.ok) {
             const data = await response.json();
             setRequestStatus(data.request.status);
@@ -85,7 +86,7 @@ const SolicitarServico = () => {
 
   const handleRespondAddition = async (aprovado) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/requests/${requestId}/respond-addition`, {
+      const response = await fetch(`${API_URL}/requests/${requestId}/respond-addition`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ aprovado })
@@ -103,7 +104,7 @@ const SolicitarServico = () => {
   const simulateAcceptance = async () => {
     // Para simular, aceitamos a proposta utilizando um profissional mock no banco
     try {
-      const response = await fetch(`http://localhost:3000/api/requests/${requestId}/accept`, {
+      const response = await fetch(`${API_URL}/requests/${requestId}/accept`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ profissionalId: 'prof-1' }) // Vincula o Pintor do mock
@@ -124,7 +125,7 @@ const SolicitarServico = () => {
     setEstimate(null);
 
     try {
-      const response = await fetch('http://localhost:3000/api/requests/estimate', {
+      const response = await fetch(`${API_URL}/requests/estimate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -151,7 +152,7 @@ const SolicitarServico = () => {
     if (!estimate) return;
 
     try {
-      const response = await fetch('http://localhost:3000/api/requests', {
+      const response = await fetch(`${API_URL}/requests`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

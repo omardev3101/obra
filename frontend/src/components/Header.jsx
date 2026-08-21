@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon, MapPin, Phone, Calculator, ChevronDown, CheckCircle2, Zap } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Header = () => {
 
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/settings');
+        const res = await fetch(`${API_URL}/settings`);
         if (res.ok) {
           const data = await res.json();
           setCompanySettings(data);

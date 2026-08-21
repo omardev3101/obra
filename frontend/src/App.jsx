@@ -8,6 +8,8 @@ import SolicitarServico from './components/SolicitarServico';
 import PainelProfissional from './components/PainelProfissional';
 import PedreiroParaReformas from './components/PedreiroParaReformas';
 
+import { API_URL } from './config';
+
 // Subcomponente para aplicar metatags de SEO Global
 function GlobalSEOHelper() {
   const { pathname } = useLocation();
@@ -17,7 +19,7 @@ function GlobalSEOHelper() {
     if (!pathname.startsWith('/locais/')) {
       const fetchGlobalSEO = async () => {
         try {
-          const res = await fetch('http://localhost:3000/api/settings');
+          const res = await fetch(`${API_URL}/settings`);
           if (res.ok) {
             const data = await res.json();
             

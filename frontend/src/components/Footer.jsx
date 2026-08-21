@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, Clock, ArrowUpRight } from 'lucide-react';
 
+import { API_URL } from '../config';
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [settings, setSettings] = useState({
@@ -21,7 +23,7 @@ const Footer = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/settings');
+        const res = await fetch(`${API_URL}/settings`);
         if (res.ok) {
           const data = await res.json();
           setSettings(data);

@@ -24,7 +24,7 @@ app.use('/api', apiRoutes);
 // Servir arquivos estáticos se necessário (por exemplo, imagens de upload)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3005;
 
 // Função para semear usuários iniciais se o banco estiver vazio
 const seedUsers = async () => {
@@ -65,9 +65,9 @@ const startServer = async () => {
   // Conecta ao Banco
   await connectDB();
 
-  // Sincroniza Tabelas (Modo Alter para atualizar o schema sem derrubar os dados)
+  // Sincroniza Tabelas
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log('Modelos Sequelize sincronizados com sucesso.');
     
     // Semeia dados iniciais

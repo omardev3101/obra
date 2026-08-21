@@ -21,8 +21,7 @@ const sequelize = new Sequelize(
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ alter: true });
-    console.log('Conectado ao Banco de Dados e tabelas sincronizadas com sucesso!');
+    console.log('Conectado ao Banco de Dados PostgreSQL!');
   } catch (error) {
     console.error('Erro ao conectar ao banco de dados:', error);
     process.exit(1);

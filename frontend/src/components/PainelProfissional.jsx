@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { HardHat, MapPin, Zap, CheckCircle2, Phone, RefreshCw, Calendar, XCircle, CheckCircle } from 'lucide-react';
+import { API_URL } from '../config';
 
 const PainelProfissional = () => {
   const [selectedCity, setSelectedCity] = useState('Cabreúva');
@@ -29,7 +30,7 @@ const PainelProfissional = () => {
   const fetchPendingRequests = async (city) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/requests/pending?cidade=${city}`);
+      const response = await fetch(`${API_URL}/requests/pending?cidade=${city}`);
       if (response.ok) {
         const data = await response.json();
         setPendingRequests(data);
@@ -50,7 +51,7 @@ const PainelProfissional = () => {
   const handleAcceptJob = async (job) => {
     if (!activeProf) return;
     try {
-      const response = await fetch(`http://localhost:3000/api/requests/${job.id}/accept`, {
+      const response = await fetch(`${API_URL}/requests/${job.id}/accept`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ profissionalId: activeProf.id })
@@ -74,7 +75,7 @@ const PainelProfissional = () => {
   const handleCancelWithJustification = async () => {
     if (!justificativa) return alert('Por favor, informe a justificativa de cancelamento.');
     try {
-      const response = await fetch(`http://localhost:3000/api/requests/${activeJob.id}/status`, {
+      const response = await fetch(`${API_URL}/requests/${activeJob.id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'Cancelado', justificativaCancelamento: justificativa })
@@ -94,7 +95,7 @@ const PainelProfissional = () => {
   const handleProposeAddition = async () => {
     if (!extraDesc || !extraPreco) return alert('Por favor, preencha todos os campos.');
     try {
-      const response = await fetch(`http://localhost:3000/api/requests/${activeJob.id}/propose-addition`, {
+      const response = await fetch(`${API_URL}/requests/${activeJob.id}/propose-addition`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ precoAdicional: extraPreco, justificativaAdicional: extraDesc })
@@ -115,7 +116,7 @@ const PainelProfissional = () => {
   const handleFinishJob = async (status) => {
     if (!activeJob) return;
     try {
-      const response = await fetch(`http://localhost:3000/api/requests/${activeJob.id}/status`, {
+      const response = await fetch(`${API_URL}/requests/${activeJob.id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }) // 'Finalizado' or 'Cancelado'

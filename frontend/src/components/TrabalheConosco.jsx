@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { UserCheck, Send, CheckCircle2 } from 'lucide-react';
+import { API_URL } from '../config';
 
 const TrabalheConosco = () => {
   const [nome, setNome] = useState('');
@@ -40,7 +41,7 @@ const TrabalheConosco = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/api/professionals', {
+      const response = await fetch(`${API_URL}/professionals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
