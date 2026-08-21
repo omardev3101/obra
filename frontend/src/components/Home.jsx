@@ -5,6 +5,7 @@ import Calculator from './Calculator';
 import LeadModal from './LeadModal';
 import BeforeAfterSlider from './BeforeAfterSlider';
 import { Star, Shield, HardHat, Award, ArrowRight, CheckCircle2 } from 'lucide-react';
+import Footer from './Footer';
 import { API_URL } from '../config';
 
 const Counter = ({ end, prefix = '', suffix = '', duration = 2000 }) => {
