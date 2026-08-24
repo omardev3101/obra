@@ -27,6 +27,14 @@ const ServiceRequest = sequelize.define('ServiceRequest', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  cep: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  enderecoCompleto: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   status: {
     type: DataTypes.ENUM('Buscando', 'Aceito', 'Em Caminho', 'Finalizado', 'Cancelado'),
     defaultValue: 'Buscando',

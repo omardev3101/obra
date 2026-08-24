@@ -31,6 +31,8 @@ const SolicitarServico = () => {
   const [telefone, setTelefone] = useState('');
   const [cidade, setCidade] = useState('Cabreúva');
   const [bairro, setBairro] = useState('Centro');
+  const [cep, setCep] = useState('');
+  const [enderecoCompleto, setEnderecoCompleto] = useState('');
   const [servico, setServico] = useState(LISTA_SERVICOS[0]);
   
   // Novos campos: metragem, diária e fotos/vídeos
@@ -44,6 +46,36 @@ const SolicitarServico = () => {
   const [requestId, setRequestId] = useState(null);
   const [requestStatus, setRequestStatus] = useState(null); // 'Buscando', 'Aceito'
   const [acceptedProf, setAcceptedProf] = useState(null);
+
+  const handleMediaCapture = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMídiaUrls((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCepBlur = async () => {
+    const cleanCep = cep.replace(/\D/g, '');
+    if (cleanCep.length === 8) {
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+        if (res.ok) {
+          const data = await res.json();
+          if (!data.erro) {
+            setCidade(data.localidade || cidade);
+            setBairro(data.bairro || bairro);
+            setEnderecoCompleto(`${data.logradouro}, ${data.bairro} - ${data.localidade}/${data.uf}`);
+          }
+        }
+      } catch (err) {
+        console.error('Erro ao consultar CEP:', err);
+      }
+    }
+  };
 
   const handlePhoneFormat = (val) => {
     const numbers = val.replace(/\D/g, '');
@@ -161,6 +193,8 @@ const SolicitarServico = () => {
           servicoSelecionado: servico,
           cidade,
           bairro,
+          cep,
+          enderecoCompleto,
           precoEstimado: estimate.precoEstimado,
           taxaIntermediacao: estimate.taxaIntermediacao,
           multiplicadorDinamico: estimate.multiplicador,
@@ -394,7 +428,7 @@ const SolicitarServico = () => {
 
                 {/* Seção de Fotos e Vídeos */}
                 <div className="form-group">
-                  <label className="form-label">Fotos / Vídeos da Área de Serviço</label>
+                  <label className="form-label">Fotos / Vídeos da Área de Serviço (Câmera ou Arquivo)</label>
                   <div style={{
                     border: '2px dashed var(--border-color)',
                     borderRadius: '12px',
@@ -406,20 +440,32 @@ const SolicitarServico = () => {
                       <div>
                         <Paperclip size={24} style={{ color: 'var(--text-secondary)', marginBottom: '8px' }} />
                         <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '0 0 12px 0' }}>
-                          Arraste arquivos ou anexe imagens da parede, vazamento ou fiação.
+                          Tire uma foto na hora com a câmera ou envie um arquivo do seu dispositivo.
                         </p>
-                        <button 
-                          type="button" 
-                          onClick={handleAddMockMedia} 
-                          className="btn-secondary" 
-                          style={{ padding: '6px 12px', fontSize: '0.8rem' }}
-                        >
-                          Anexar Fotos de Exemplo
-                        </button>
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                          <label className="btn-primary" style={{ padding: '8px 14px', fontSize: '0.8rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                            📸 Tirar Foto / Enviar Arquivo
+                            <input
+                              type="file"
+                              accept="image/*"
+                              capture="environment"
+                              onChange={handleMediaCapture}
+                              style={{ display: 'none' }}
+                            />
+                          </label>
+                          <button 
+                            type="button" 
+                            onClick={handleAddMockMedia} 
+                            className="btn-secondary" 
+                            style={{ padding: '8px 14px', fontSize: '0.8rem' }}
+                          >
+                            Anexar Fotos de Exemplo
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
                           {mídiaUrls.map((url, idx) => (
                             <img 
                               key={idx} 
@@ -429,21 +475,47 @@ const SolicitarServico = () => {
                             />
                           ))}
                         </div>
-                        <span style={{ fontSize: '0.8rem', color: '#10b981', fontWeight: 700 }}>2 Imagens anexadas com sucesso!</span>
-                        <button 
-                          type="button" 
-                          onClick={() => setMídiaUrls([])} 
-                          className="btn-secondary" 
-                          style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--danger)' }}
-                        >
-                          Remover Anexos
-                        </button>
+                        <span style={{ fontSize: '0.8rem', color: '#10b981', fontWeight: 700 }}>
+                          {mídiaUrls.length} imagem(ns) anexada(s) com sucesso!
+                        </span>
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                          <label className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', cursor: 'pointer' }}>
+                            + Adicionar Mais
+                            <input
+                              type="file"
+                              accept="image/*"
+                              capture="environment"
+                              onChange={handleMediaCapture}
+                              style={{ display: 'none' }}
+                            />
+                          </label>
+                          <button 
+                            type="button" 
+                            onClick={() => setMídiaUrls([])} 
+                            className="btn-secondary" 
+                            style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--danger)' }}
+                          >
+                            Remover Anexos
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                {/* Localização Detalhada */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+                  <div className="form-group">
+                    <label className="form-label">CEP *</label>
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      placeholder="13318-000"
+                      value={cep}
+                      onChange={(e) => setCep(e.target.value)}
+                      onBlur={handleCepBlur}
+                    />
+                  </div>
                   <div className="form-group">
                     <label className="form-label">Cidade *</label>
                     <input 
@@ -464,6 +536,17 @@ const SolicitarServico = () => {
                       onChange={(e) => setBairro(e.target.value)}
                     />
                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Endereço Completo & Número (Local da Obra)</label>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    placeholder="Ex: Rua das Flores, 123 - Bloco B, Apto 42"
+                    value={enderecoCompleto}
+                    onChange={(e) => setEnderecoCompleto(e.target.value)}
+                  />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>

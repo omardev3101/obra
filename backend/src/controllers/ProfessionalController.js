@@ -1,8 +1,9 @@
+const Professional = require('../models/Professional');
 const CompanySettings = require('../models/CompanySettings');
 
 exports.createProfessional = async (req, res) => {
   try {
-    const { nome, telefone, email, especialidade, cidade, experiencia, aceitouTermos, percentualDescontoAcordado } = req.body;
+    const { nome, telefone, email, especialidade, cidade, cep, endereco, raioKm, fotoUrl, experiencia, aceitouTermos, percentualDescontoAcordado } = req.body;
 
     if (!nome || !telefone || !especialidade || !cidade) {
       return res.status(400).json({ error: 'Nome, Telefone, Especialidade e Cidade são obrigatórios.' });
@@ -18,6 +19,10 @@ exports.createProfessional = async (req, res) => {
       email,
       especialidade,
       cidade,
+      cep,
+      endereco,
+      raioKm: parseInt(raioKm) || 20,
+      fotoUrl,
       experiencia,
       aceitouTermos: true,
       dataAceiteTermos: new Date(),

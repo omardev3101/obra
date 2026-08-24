@@ -27,6 +27,23 @@ const Professional = sequelize.define('Professional', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  cep: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  endereco: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  raioKm: {
+    type: DataTypes.INTEGER,
+    defaultValue: 20,
+    allowNull: false
+  },
+  fotoUrl: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
   experiencia: {
     type: DataTypes.TEXT,
     allowNull: true

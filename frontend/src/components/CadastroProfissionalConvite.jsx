@@ -11,6 +11,10 @@ const CadastroProfissionalConvite = () => {
     email: '',
     especialidade: 'Pedreiro',
     cidade: 'Cabreúva',
+    cep: '',
+    endereco: '',
+    raioKm: '20',
+    fotoUrl: '',
     experiencia: ''
   });
 
@@ -23,6 +27,38 @@ const CadastroProfissionalConvite = () => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+
+  const handlePhotoCapture = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, fotoUrl: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCepBlur = async () => {
+    const cleanCep = formData.cep.replace(/\D/g, '');
+    if (cleanCep.length === 8) {
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+        if (res.ok) {
+          const data = await res.json();
+          if (!data.erro) {
+            setFormData((prev) => ({
+              ...prev,
+              cidade: data.localidade || prev.cidade,
+              endereco: `${data.logradouro}, ${data.bairro} - ${data.localidade}/${data.uf}`
+            }));
+          }
+        }
+      } catch (err) {
+        console.error('Erro ao buscar CEP:', err);
+      }
+    }
+  };
 
   const especialidades = [
     'Pedreiro',
@@ -149,7 +185,7 @@ const CadastroProfissionalConvite = () => {
                   <UserCheck size={20} /> Próximo Passo: Aprovação da Engenharia
                 </div>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: 0 }}>
-                  Nossa equipe de engenheiros validará seus dados. Assim que seu status for atualizado para <strong>Aprovado</strong> no painel, você passará a receber chamados de obras e serviços em sua região!
+                  Nossa equipe de engenheiros validará seus dados. Assim que seu status for atualizado para <strong>Aprovado</strong> no painel, você passará a receber chamados de obras e serviços num raio de até <strong>{formData.raioKm} km</strong> da sua região!
                 </p>
               </div>
             </div>
@@ -184,6 +220,52 @@ const CadastroProfissionalConvite = () => {
               )}
 
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                
+                {/* Upload de Foto / Câmera */}
+                <div style={{
+                  border: '1px dashed var(--accent-color)',
+                  padding: '20px',
+                  borderRadius: '16px',
+                  background: 'var(--bg-secondary)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '20px'
+                }}>
+                  <div style={{
+                    width: '80px',
+                    height: '80px',
+                    borderRadius: '50%',
+                    background: 'var(--bg-tertiary)',
+                    border: '2px solid var(--border-color)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    flexShrink: 0
+                  }}>
+                    {formData.fotoUrl ? (
+                      <img src={formData.fotoUrl} alt="Foto Perfil" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <HardHat size={36} color="var(--accent-color)" />
+                    )}
+                  </div>
+                  <div>
+                    <label className="form-label" style={{ fontWeight: 800, marginBottom: '4px', display: 'block' }}>
+                      📸 Foto do Profissional (Tirar Foto ou Enviar Arquivo)
+                    </label>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                      Sua foto será exibida para os clientes quando seu orçamento for aprovado.
+                    </p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={handlePhotoCapture}
+                      style={{ fontSize: '0.85rem' }}
+                    />
+                  </div>
+                </div>
+
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div className="form-group">
                     <label className="form-label">Nome Completo *</label>
@@ -239,19 +321,75 @@ const CadastroProfissionalConvite = () => {
                   </div>
                 </div>
 
+                {/* Localização Detalhada: CEP, Cidade e Endereço Completo */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px' }}>
+                  <div className="form-group">
+                    <label className="form-label">CEP da sua Base</label>
+                    <input
+                      type="text"
+                      name="cep"
+                      className="form-control"
+                      placeholder="Ex: 13318-000"
+                      value={formData.cep}
+                      onChange={handleChange}
+                      onBlur={handleCepBlur}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Cidade Principal *</label>
+                    <select
+                      name="cidade"
+                      required
+                      className="form-control"
+                      value={formData.cidade}
+                      onChange={handleChange}
+                    >
+                      {cidades.map((cidade) => (
+                        <option key={cidade} value={cidade}>{cidade}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
                 <div className="form-group">
-                  <label className="form-label">Cidade Principal de Atendimento *</label>
-                  <select
-                    name="cidade"
-                    required
+                  <label className="form-label">Endereço Completo / Bairro (Base Operacional)</label>
+                  <input
+                    type="text"
+                    name="endereco"
                     className="form-control"
-                    value={formData.cidade}
+                    placeholder="Ex: Av. Principal, 500, Centro - Cabreúva/SP"
+                    value={formData.endereco}
                     onChange={handleChange}
-                  >
-                    {cidades.map((cidade) => (
-                      <option key={cidade} value={cidade}>{cidade}</option>
-                    ))}
-                  </select>
+                  />
+                </div>
+
+                {/* Seletor de Raio em KM de Atendimento */}
+                <div className="form-group" style={{ background: 'var(--bg-secondary)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <label className="form-label" style={{ fontWeight: 800, margin: 0 }}>
+                      📍 Raio Máximo de Atendimento (Receber Propostas)
+                    </label>
+                    <span style={{ fontWeight: 800, color: 'var(--accent-color)', fontSize: '1.1rem' }}>
+                      Até {formData.raioKm} km
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    name="raioKm"
+                    min="5"
+                    max="100"
+                    step="5"
+                    className="form-control"
+                    style={{ accentColor: 'var(--accent-color)', cursor: 'pointer' }}
+                    value={formData.raioKm}
+                    onChange={handleChange}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                    <span>5 km (Local)</span>
+                    <span>20 km (Região)</span>
+                    <span>50 km (Metropolitana)</span>
+                    <span>100 km (Estado)</span>
+                  </div>
                 </div>
 
                 <div className="form-group">
