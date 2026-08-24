@@ -180,6 +180,28 @@ exports.listPendingRequests = async (req, res) => {
   }
 };
 
+const ServiceStep = require('../models/ServiceStep');
+
+const criarEtapasPadrao = async (serviceRequestId, servicoSelecionado) => {
+  const etapasPadrao = [
+    { ordem: 1, titulo: '1. Vistoria Inicial & Preparação do Local', descricao: 'Alinhamento do escopo com o cliente, proteção da área de trabalho e preparação dos materiais.', status: 'Pendente' },
+    { ordem: 2, titulo: '2. Execução da Infraestrutura / Base', descricao: 'Quebras, alvenaria, passagem de tubulação ou montagem da estrutura base da obra.', status: 'Pendente' },
+    { ordem: 3, titulo: '3. Execução Principal & Instalação', descricao: 'Aplicação de revestimentos, fiação, pintura de base ou montagem do serviço contratado.', status: 'Pendente' },
+    { ordem: 4, titulo: '4. Acabamento & Limpeza Técnica', descricao: 'Lixamento, retocamento, testes funcionais de instalação e recolhimento de entulhos.', status: 'Pendente' },
+    { ordem: 5, titulo: '5. Vistoria Final & Entrega das Chaves', descricao: 'Conferência final com o cliente/engenheiro e validação do termo de conclusão.', status: 'Pendente' }
+  ];
+
+  for (const step of etapasPadrao) {
+    await ServiceStep.create({
+      serviceRequestId,
+      ordem: step.ordem,
+      titulo: step.titulo,
+      descricao: step.descricao,
+      status: step.status
+    });
+  }
+};
+
 exports.acceptRequest = async (req, res) => {
   try {
     const { id } = req.params;
@@ -203,8 +225,11 @@ exports.acceptRequest = async (req, res) => {
       profissionalId
     });
 
+    // Cria as etapas padrão do cronograma para acompanhamento
+    await criarEtapasPadrao(request.id, request.servicoSelecionado);
+
     return res.json({
-      message: 'Você aceitou o serviço com sucesso!',
+      message: 'Você aceitou o serviço com sucesso! Cronograma de etapas gerado.',
       request
     });
   } catch (error) {
@@ -325,3 +350,66 @@ exports.listAllRequests = async (req, res) => {
     return res.status(500).json({ error: 'Erro interno no servidor.' });
   }
 };
+
+exports.getSteps = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let steps = await ServiceStep.findAll({
+      where: { serviceRequestId: id },
+      order: [['ordem', 'ASC']]
+    });
+
+    // Se o serviço não possui etapas geradas ainda, gerar automaticamente
+    if (steps.length === 0) {
+      const request = await ServiceRequest.findByPk(id);
+      if (request) {
+        await criarEtapasPadrao(id, request.servicoSelecionado);
+        steps = await ServiceStep.findAll({
+          where: { serviceRequestId: id },
+          order: [['ordem', 'ASC']]
+        });
+      }
+    }
+
+    return res.json(steps);
+  } catch (error) {
+    console.error('Erro ao buscar etapas do cronograma:', error);
+    return res.status(500).json({ error: 'Erro interno no servidor.' });
+  }
+};
+
+exports.updateStepStatus = async (req, res) => {
+  try {
+    const { stepId } = req.params;
+    const { status, fotoComprovante, observacaoCampo } = req.body;
+
+    const step = await ServiceStep.findByPk(stepId);
+    if (!step) {
+      return res.status(404).json({ error: 'Etapa do cronograma não encontrada.' });
+    }
+
+    const updates = { status };
+    if (status === 'Concluido') {
+      updates.dataConclusao = new Date();
+    }
+    if (fotoComprovante) updates.fotoComprovante = fotoComprovante;
+    if (observacaoCampo) updates.observacaoCampo = observacaoCampo;
+
+    await step.update(updates);
+
+    // Atualiza progresso e verifica se todas as etapas foram concluídas
+    const allSteps = await ServiceStep.findAll({ where: { serviceRequestId: step.serviceRequestId } });
+    const concludedCount = allSteps.filter(s => s.status === 'Concluido').length;
+    
+    // Opcional: Se todas concluídas, atualizar o chamado
+    if (concludedCount === allSteps.length && allSteps.length > 0) {
+      await ServiceRequest.update({ status: 'Finalizado' }, { where: { id: step.serviceRequestId } });
+    }
+
+    return res.json({ message: 'Etapa atualizada com sucesso!', step, progress: Math.round((concludedCount / allSteps.length) * 100) });
+  } catch (error) {
+    console.error('Erro ao atualizar etapa:', error);
+    return res.status(500).json({ error: 'Erro interno no servidor.' });
+  }
+};
+

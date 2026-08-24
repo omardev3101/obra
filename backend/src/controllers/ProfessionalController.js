@@ -1,11 +1,15 @@
-const Professional = require('../models/Professional');
+const CompanySettings = require('../models/CompanySettings');
 
 exports.createProfessional = async (req, res) => {
   try {
-    const { nome, telefone, email, especialidade, cidade, experiencia } = req.body;
+    const { nome, telefone, email, especialidade, cidade, experiencia, aceitouTermos, percentualDescontoAcordado } = req.body;
 
     if (!nome || !telefone || !especialidade || !cidade) {
       return res.status(400).json({ error: 'Nome, Telefone, Especialidade e Cidade são obrigatórios.' });
+    }
+
+    if (!aceitouTermos) {
+      return res.status(400).json({ error: 'Você precisa aceitar os termos e comissão da plataforma para concluir o cadastro.' });
     }
 
     const professional = await Professional.create({
@@ -14,15 +18,34 @@ exports.createProfessional = async (req, res) => {
       email,
       especialidade,
       cidade,
-      experiencia
+      experiencia,
+      aceitouTermos: true,
+      dataAceiteTermos: new Date(),
+      percentualDescontoAcordado: percentualDescontoAcordado || 15.00
     });
 
     return res.status(201).json({
-      message: 'Cadastro realizado com sucesso! Nossa equipe entrará em contato.',
+      message: 'Cadastro realizado com sucesso! Aguarde a aprovação do Administrador.',
       professional
     });
   } catch (error) {
     console.error('Erro ao cadastrar profissional:', error);
+    return res.status(500).json({ error: 'Erro interno no servidor.' });
+  }
+};
+
+exports.getTermsSettings = async (req, res) => {
+  try {
+    let settings = await CompanySettings.findOne();
+    if (!settings) {
+      settings = await CompanySettings.create({});
+    }
+    return res.json({
+      taxaComissaoProfissional: settings.taxaComissaoProfissional || 15.00,
+      termosProfissionalTexto: settings.termosProfissionalTexto
+    });
+  } catch (error) {
+    console.error('Erro ao buscar termos:', error);
     return res.status(500).json({ error: 'Erro interno no servidor.' });
   }
 };

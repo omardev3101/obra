@@ -1190,6 +1190,39 @@ Você está cordialmente convidado(a) a conhecer o *1001 Obra*, a plataforma des
                 </div>
               </div>
 
+              {/* Card Convite Profissional com Aceite de Termos */}
+              <div style={{ background: 'var(--bg-secondary)', padding: '24px', borderRadius: '16px', border: '1px solid var(--accent-color)', marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--accent-color)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  🤝 Convite Específico para Credenciamento de Profissionais Parceiros
+                </h3>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                  Envie este link aos profissionais (pedreiros, pintores, eletricistas) para que façam o cadastro e aceitem os termos de retenção/comissão de 15% sobre os serviços prestados.
+                </p>
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                  <a 
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`👷‍♂️ *Seja um Profissional Credenciado 1001 OBRA!*\n\nReceba chamados de obras e reformas na sua cidade com garantia de pagamento.\n\nFaça seu cadastro e aceite os termos de parceria no link abaixo:\nhttps://pessistemas.vps-kinghost.net/obra/convite-profissional`)}`}
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="btn-primary"
+                    style={{ background: '#25D366', color: '#fff', padding: '10px 20px', textDecoration: 'none', borderRadius: '10px' }}
+                  >
+                    💬 Enviar Convite de Profissional via WhatsApp
+                  </a>
+                  <button 
+                    type="button" 
+                    className="btn-secondary"
+                    style={{ padding: '10px 16px', borderRadius: '10px' }}
+                    onClick={() => {
+                      const link = 'https://pessistemas.vps-kinghost.net/obra/convite-profissional';
+                      navigator.clipboard.writeText(link);
+                      alert('Link de convite do profissional copiado!');
+                    }}
+                  >
+                    🔗 Copiar Link do Convite (/convite-profissional)
+                  </button>
+                </div>
+              </div>
+
               <div style={{ background: 'var(--bg-primary)', padding: '24px', borderRadius: '16px', border: '1px dashed var(--accent-color)' }}>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '12px', color: 'var(--accent-color)' }}>💡 Dica de Divulgação</h3>
                 <ul style={{ paddingLeft: '20px', color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.95rem' }}>
@@ -1237,6 +1270,9 @@ Você está cordialmente convidado(a) a conhecer o *1001 Obra*, a plataforma des
                       <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                         <strong>Especialidade:</strong> {prof.especialidade} | <strong>Cidade:</strong> {prof.cidade}
                       </p>
+                      <div style={{ fontSize: '0.85rem', color: prof.aceitouTermos ? '#10b981' : 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                        <strong>Termos & Comissão:</strong> {prof.aceitouTermos ? `✅ Aceito (${prof.percentualDescontoAcordado || 15}% taxa) em ${prof.dataAceiteTermos ? new Date(prof.dataAceiteTermos).toLocaleDateString('pt-BR') : 'Data não registrada'}` : '⏳ Pendente de aceite'}
+                      </div>
                       {prof.experiencia && (
                         <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', background: 'var(--bg-tertiary)', padding: '8px 12px', borderRadius: '6px', marginTop: '8px', whiteSpace: 'pre-wrap' }}>
                           <strong>Experiência:</strong> {prof.experiencia}

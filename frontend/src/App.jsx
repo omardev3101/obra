@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Admin from './components/Admin';
 import SEOPageTemplate from './components/SEOPageTemplate';
 import TrabalheConosco from './components/TrabalheConosco';
+import CadastroProfissionalConvite from './components/CadastroProfissionalConvite';
 import SolicitarServico from './components/SolicitarServico';
 import PainelProfissional from './components/PainelProfissional';
 import PedreiroParaReformas from './components/PedreiroParaReformas';
@@ -110,8 +111,10 @@ function App() {
         {/* Painel de Controle */}
         <Route path="/admin" element={<Admin />} />
 
-        {/* Cadastro Trabalhe Conosco */}
+        {/* Cadastro Trabalhe Conosco e Convite de Profissionais */}
         <Route path="/trabalhe-conosco" element={<TrabalheConosco />} />
+        <Route path="/convite-profissional" element={<CadastroProfissionalConvite />} />
+        <Route path="/cadastro-profissional" element={<CadastroProfissionalConvite />} />
 
         {/* Solicitação de Serviços (Estilo Uber) */}
         <Route path="/chamar-profissional" element={<SolicitarServico />} />

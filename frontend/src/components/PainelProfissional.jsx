@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import { HardHat, MapPin, Zap, CheckCircle2, Phone, RefreshCw, Calendar, XCircle, CheckCircle } from 'lucide-react';
+import { HardHat, MapPin, Zap, CheckCircle2, Phone, RefreshCw, Calendar, XCircle, CheckCircle, Clock, Camera, FileCheck, Layers } from 'lucide-react';
 import { API_URL } from '../config';
 
 const PainelProfissional = () => {
@@ -12,6 +12,12 @@ const PainelProfissional = () => {
   const [activeJob, setActiveJob] = useState(null);
   const [loading, setLoading] = useState(false);
   const [expandedJobId, setExpandedJobId] = useState(null);
+
+  // Cronograma por Etapas
+  const [steps, setSteps] = useState([]);
+  const [stepLoading, setStepLoading] = useState(false);
+  const [stepObs, setStepObs] = useState({});
+  const [stepPhoto, setStepPhoto] = useState({});
   
   // Estados para Justificativa de cancelamento e Adicionais
   const [justificativa, setJustificativa] = useState('');
@@ -19,6 +25,47 @@ const PainelProfissional = () => {
   const [showAdditionDialog, setShowAdditionDialog] = useState(false);
   const [extraDesc, setExtraDesc] = useState('');
   const [extraPreco, setExtraPreco] = useState('');
+
+  const fetchSteps = async (jobId) => {
+    setStepLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/requests/${jobId}/steps`);
+      if (response.ok) {
+        const data = await response.json();
+        setSteps(data);
+      }
+    } catch (err) {
+      console.error('Erro ao buscar etapas do cronograma:', err);
+    } finally {
+      setStepLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeJob) {
+      fetchSteps(activeJob.id);
+    }
+  }, [activeJob]);
+
+  const handleUpdateStep = async (stepId, status) => {
+    try {
+      const response = await fetch(`${API_URL}/requests/steps/${stepId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status,
+          observacaoCampo: stepObs[stepId] || null,
+          fotoComprovante: stepPhoto[stepId] || null
+        })
+      });
+
+      if (response.ok) {
+        fetchSteps(activeJob.id);
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar etapa:', err);
+    }
+  };
 
   const mockProfessionals = [
     { id: 'prof-1', nome: 'Claudio Rogerio da Silva', especialidade: 'Pintor', cidade: 'Cabreúva', status: 'Aprovado' },
@@ -265,6 +312,116 @@ const PainelProfissional = () => {
                       );
                     })()}
                   </div>
+
+                  {/* Cronograma Interativo de Etapas da Obra */}
+                  {(() => {
+                    const totalSteps = steps.length || 1;
+                    const completedSteps = steps.filter(s => s.status === 'Concluido').length;
+                    const progressPercent = Math.round((completedSteps / totalSteps) * 100);
+
+                    return (
+                      <div style={{
+                        background: 'var(--bg-secondary)',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '16px',
+                        padding: '20px',
+                        margin: '24px 0'
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <Layers color="var(--accent-color)" size={20} />
+                            <h4 style={{ fontWeight: 800, fontSize: '1.1rem', margin: 0 }}>
+                              Cronograma Físico & Validação por Etapas
+                            </h4>
+                          </div>
+                          <span style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--accent-color)' }}>
+                            {progressPercent}% Concluído
+                          </span>
+                        </div>
+
+                        {/* Barra de Progresso */}
+                        <div style={{
+                          width: '100%',
+                          height: '10px',
+                          background: 'var(--bg-tertiary)',
+                          borderRadius: '5px',
+                          overflow: 'hidden',
+                          marginBottom: '20px',
+                          border: '1px solid var(--border-color)'
+                        }}>
+                          <div style={{
+                            width: `${progressPercent}%`,
+                            height: '100%',
+                            background: 'var(--accent-gradient)',
+                            transition: 'width 0.4s ease'
+                          }} />
+                        </div>
+
+                        {/* Checklist de Etapas */}
+                        {stepLoading ? (
+                          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Carregando cronograma...</p>
+                        ) : (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                            {steps.map((step) => {
+                              const isConcluido = step.status === 'Concluido';
+                              return (
+                                <div key={step.id} style={{
+                                  background: isConcluido ? 'rgba(16, 185, 129, 0.08)' : 'var(--bg-tertiary)',
+                                  border: `1px solid ${isConcluido ? '#10b981' : 'var(--border-color)'}`,
+                                  borderRadius: '12px',
+                                  padding: '16px'
+                                }}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                    <div>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        {isConcluido ? (
+                                          <CheckCircle2 size={18} color="#10b981" />
+                                        ) : (
+                                          <Clock size={18} color="var(--accent-color)" />
+                                        )}
+                                        <h5 style={{ fontWeight: 800, fontSize: '0.95rem', margin: 0 }}>{step.titulo}</h5>
+                                      </div>
+                                      <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '4px 0 8px 0' }}>
+                                        {step.descricao}
+                                      </p>
+                                      {step.observacaoCampo && (
+                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '4px' }}>
+                                          💬 Nota do prestador: "{step.observacaoCampo}"
+                                        </div>
+                                      )}
+                                      {step.dataConclusao && (
+                                        <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>
+                                          Concluído em: {new Date(step.dataConclusao).toLocaleString('pt-BR')}
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {!isConcluido ? (
+                                      <button
+                                        onClick={() => handleUpdateStep(step.id, 'Concluido')}
+                                        className="btn-primary"
+                                        style={{ fontSize: '0.8rem', padding: '6px 12px', background: '#10b981', color: '#fff', border: 'none', borderRadius: '6px' }}
+                                      >
+                                        Validar Etapa
+                                      </button>
+                                    ) : (
+                                      <button
+                                        onClick={() => handleUpdateStep(step.id, 'Em Andamento')}
+                                        className="btn-secondary"
+                                        style={{ fontSize: '0.75rem', padding: '4px 8px' }}
+                                      >
+                                        Reabrir
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
 
                   {/* Detalhes do serviço adicional proposto */}
                   {activeJob.aprovadoAdicional && activeJob.aprovadoAdicional !== 'Nenhum' && (

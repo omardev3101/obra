@@ -35,6 +35,20 @@ const Professional = sequelize.define('Professional', {
     type: DataTypes.ENUM('Pendente', 'Aprovado', 'Reprovado'),
     defaultValue: 'Pendente',
     allowNull: false
+  },
+  aceitouTermos: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  },
+  dataAceiteTermos: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  percentualDescontoAcordado: {
+    type: DataTypes.DECIMAL(5, 2),
+    defaultValue: 15.00,
+    allowNull: true
   }
 });
 

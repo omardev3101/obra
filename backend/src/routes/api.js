@@ -26,7 +26,8 @@ router.get('/seo-list', SEOController.listPages);
 // Registro de Leads (do formulário e calculadora)
 router.post('/leads', LeadController.createLead);
 
-// Registro de Profissionais (Trabalhe Conosco)
+// Registro de Profissionais (Trabalhe Conosco e Convite)
+router.get('/professionals/terms-settings', ProfessionalController.getTermsSettings);
 router.post('/professionals', ProfessionalController.createProfessional);
 
 // Portfólio de Projetos
@@ -62,6 +63,8 @@ router.patch('/requests/:id/accept', RequestController.acceptRequest);
 router.patch('/requests/:id/status', RequestController.updateRequestStatus);
 router.post('/requests/:id/propose-addition', RequestController.proposeAddition);
 router.post('/requests/:id/respond-addition', RequestController.respondToAddition);
+router.get('/requests/:id/steps', RequestController.getSteps);
+router.patch('/requests/steps/:stepId', RequestController.updateStepStatus);
 
 const SettingsController = require('../controllers/SettingsController');
 
